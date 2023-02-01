@@ -10,29 +10,33 @@ namespace Timesheet.Tests
         {
         }
 
-        [Test]
-        public void Login_ShouldReturnTrue()
+        [TestCase("Иванов")]
+        [TestCase("Петров")]
+        [TestCase("Сидоров")]
+        public void Login_ShouldReturnTrue(string lastName)
         {
             //arrange(Подготовка)
-
             var service = new AuthService();
 
             //act(Выполнение)
 
-            var result = service.Login();
+            var result = service.Login(lastName);
 
             //assert(Проверка)
             Assert.IsTrue(result);
         }
 
-        [Test]
-        public void Login_ShouldReturnTrue()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("TestUser")]
+        public void Login_ShouldReturnFalse(string lastName)
         {
             //arrange(Подготовка)
+            var service = new AuthService();
 
             //act(Выполнение)
 
-            var result = service.Login();
+            var result = service.Login(lastName);
 
             //assert(Проверка)
             Assert.IsFalse(result);
