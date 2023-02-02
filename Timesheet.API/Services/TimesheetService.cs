@@ -3,7 +3,7 @@ using Timesheet.API.Models;
 
 namespace Timesheet.API.Services
 {
-    public class TimesheetService
+    public class TimesheetService : ITimesheetService
     {
         public bool TrackTime(TimeLog timeLog)
         {
