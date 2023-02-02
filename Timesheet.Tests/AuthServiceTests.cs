@@ -5,11 +5,6 @@ namespace Timesheet.Tests
 {
     public class AuthServiceTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [TestCase("Иванов")]
         [TestCase("Петров")]
         [TestCase("Сидоров")]

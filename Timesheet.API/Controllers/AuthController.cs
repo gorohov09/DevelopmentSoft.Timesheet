@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Timesheet.API.Models;
+using Timesheet.API.ResourceModels;
 using Timesheet.API.Services;
 
 namespace Timesheet.API.Controllers
