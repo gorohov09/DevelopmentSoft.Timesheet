@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Timesheet.API.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         public List<string> Employees { get; private set; }
 

@@ -7,7 +7,14 @@ namespace Timesheet.API.Services
     {
         public bool TrackTime(TimeLog timeLog)
         {
+            bool isValidHours = timeLog.WorkingHours > 0 && timeLog.WorkingHours <= 24;
+            bool isValidLastName = !string.IsNullOrWhiteSpace(timeLog.LastName);
 
+            if (!(isValidHours && isValidLastName))
+                return false;
+
+            if (!UserSession.Session.Contains(timeLog.LastName))
+                return false;
 
             Timesheets.TimeLogs.Add(timeLog);
 

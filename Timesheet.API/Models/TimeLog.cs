@@ -9,5 +9,7 @@ namespace Timesheet.API.Models
         public int WorkingHours { get; set; }
 
         public string LastName { get; set; }
+
+        public string Comment { get; set; }
     }
 }

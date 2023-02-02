@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheet.API.Services;
 
 namespace Timesheet.API
 {
@@ -23,6 +24,7 @@ namespace Timesheet.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IAuthService, AuthService>();
             services.AddControllers();
         }
 
