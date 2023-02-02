@@ -5,6 +5,13 @@ namespace Timesheet.API.Services
 {
     public class TimesheetService : ITimesheetService
     {
+        private readonly UserSession _userSession;
+
+        public TimesheetService(UserSession userSession)
+        {
+            _userSession = userSession;
+        }
+
         public bool TrackTime(TimeLog timeLog)
         {
             bool isValidHours = timeLog.WorkingHours > 0 && timeLog.WorkingHours <= 24;
@@ -13,7 +20,7 @@ namespace Timesheet.API.Services
             if (!(isValidHours && isValidLastName))
                 return false;
 
-            if (!UserSession.Session.Contains(timeLog.LastName))
+            if (!_userSession.Session.Contains(timeLog.LastName))
                 return false;
 
             Timesheets.TimeLogs.Add(timeLog);

@@ -26,6 +26,7 @@ namespace Timesheet.API
         {
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ITimesheetService, TimesheetService>();
+            services.AddSingleton<UserSession>();
             services.AddControllers();
         }
 

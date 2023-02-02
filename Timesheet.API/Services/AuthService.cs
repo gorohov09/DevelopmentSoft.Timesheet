@@ -5,10 +5,11 @@ namespace Timesheet.API.Services
 {
     public class AuthService : IAuthService
     {
-        public List<string> Employees { get; private set; }
+        private readonly UserSession _userSession;
 
-        public AuthService()
+        public AuthService(UserSession userSession)
         {
+            _userSession = userSession;
             Employees = new List<string>()
             {
                 "Иванов",
@@ -16,6 +17,9 @@ namespace Timesheet.API.Services
                 "Сидоров"
             };
         }
+
+        public List<string> Employees { get; private set; }
+
 
         //Бизнес-логика + Domain
         public bool Login(string lastName)
@@ -26,20 +30,20 @@ namespace Timesheet.API.Services
             var isEmployeeExist = Employees.Contains(lastName);
 
             if (isEmployeeExist)
-                UserSession.Session.Add(lastName);
+                _userSession.Session.Add(lastName);
 
             return isEmployeeExist;
         }
     }
 
     //Это слой Data(Persistence)
-    public static class UserSession
+    public class UserSession
     {
-        static UserSession()
+        public UserSession()
         {
             Session = new HashSet<string>();
         }
 
-        public static HashSet<string> Session { get; set; }
+        public HashSet<string> Session { get; set; }
     }
 }

@@ -11,7 +11,8 @@ namespace Timesheet.Tests
         public void Login_ShouldReturnTrue(string lastName)
         {
             //arrange(Подготовка)
-            var service = new AuthService();
+            var userSession = new UserSession();
+            var service = new AuthService(userSession); 
 
             //act(Выполнение)
 
@@ -27,7 +28,8 @@ namespace Timesheet.Tests
         public void Login_ShouldReturnFalse(string lastName)
         {
             //arrange(Подготовка)
-            var service = new AuthService();
+            var userSession = new UserSession();
+            var service = new AuthService(userSession);
 
             //act(Выполнение)
 

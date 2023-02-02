@@ -11,8 +11,9 @@ namespace Timesheet.Tests
         public void TrackTime_ShouldReturnTrue()
         {
             //arrange
+            var userSession = new UserSession();
             var expectedLastName = "TestUser";
-            UserSession.Session.Add(expectedLastName);
+            userSession.Session.Add(expectedLastName);
 
             var timeLog = new TimeLog
             {
@@ -22,7 +23,7 @@ namespace Timesheet.Tests
                 Comment = "Решал задачки"
             };
 
-            var service = new TimesheetService();
+            var service = new TimesheetService(userSession);
 
             var result = service.TrackTime(timeLog);
 
@@ -40,6 +41,7 @@ namespace Timesheet.Tests
         [TestCase("", 0)]
         public void TrackTime_ShouldReturnFalse(string lastName, int workingHours)
         {
+            var userSession = new UserSession();
             var timeLog = new TimeLog
             {
                 WorkingHours = workingHours,
@@ -48,7 +50,7 @@ namespace Timesheet.Tests
                 Comment = "Решал задачки"
             };
 
-            var service = new TimesheetService();
+            var service = new TimesheetService(userSession);
 
             var result = service.TrackTime(timeLog);
 
