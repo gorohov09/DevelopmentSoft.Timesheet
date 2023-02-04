@@ -28,12 +28,31 @@ namespace Timesheet.App.Services
         {
             var employee = _employeeRepository.GetEmployee(lastName);
             var timeLogs = _timesheetRepository.GetTimeLogs(employee.LastName);
+            var bill = 0m;
+
+            var timeLogsByMounth = timeLogs.GroupBy(x => new
+            {
+                x.Date.Year, //Группируем по месяцу и году, так как отчет может быть за >12 месяцев 
+                x.Date.Month,
+            });
+
+            foreach (var mounth in timeLogsByMounth)
+            {
+                var hoursMonth = mounth.Sum(x => x.WorkingHours);
+                if (hoursMonth > MAX_WORKING_HOURS_PER_MONTH) //Если переработка
+                {
+                    var recycleHours = hoursMonth - MAX_WORKING_HOURS_PER_MONTH;
+                    bill += (recycleHours / MAX_WORKING_HOURS_PER_MONTH) * employee.Salary * 2 + employee.Salary;
+                }
+                else
+                    bill += (hoursMonth / MAX_WORKING_HOURS_PER_MONTH) * employee.Salary;
+            }
 
             return new EmployeeReport
             {
                 LastName = employee.LastName,
                 TimeLogs = timeLogs.ToList(),
-                Bill = (timeLogs.Sum(x => x.WorkingHours) / MAX_WORKING_HOURS_PER_MONTH) * employee.Salary
+                Bill = bill
             };
         }
     }

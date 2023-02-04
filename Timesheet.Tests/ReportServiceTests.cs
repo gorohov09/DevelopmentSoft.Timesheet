@@ -38,7 +38,7 @@ namespace Timesheet.Tests
                     new TimeLog
                     {
                         LastName = expectedLastName,
-                        Date = DateTime.Now.AddDays(-2),
+                        Date = DateTime.Now.AddDays(-7),
                         WorkingHours = 4,
                         Comment = "Был на встрече"
                     }
