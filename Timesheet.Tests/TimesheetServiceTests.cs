@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
-using Timesheet.API.Models;
-using Timesheet.API.Services;
+using Timesheet.App.Services;
+using Timesheet.Domain.Models;
 
 namespace Timesheet.Tests
 {

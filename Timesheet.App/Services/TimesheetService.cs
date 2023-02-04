@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using Timesheet.API.Models;
+using Timesheet.Domain.Interfaces;
+using Timesheet.Domain.Models;
 
-namespace Timesheet.API.Services
+namespace Timesheet.App.Services
 {
     public class TimesheetService : ITimesheetService
     {

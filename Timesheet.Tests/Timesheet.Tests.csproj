@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timesheet.API\Timesheet.API.csproj" />
+    <ProjectReference Include="..\Timesheet.App\Timesheet.App.csproj" />
   </ItemGroup>
 
 </Project>

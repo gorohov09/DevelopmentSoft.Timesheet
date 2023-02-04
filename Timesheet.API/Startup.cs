@@ -9,7 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheet.API.Services;
+using Timesheet.App.Services;
+using Timesheet.Domain.Interfaces;
 
 namespace Timesheet.API
 {
@@ -24,8 +25,18 @@ namespace Timesheet.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<ITimesheetService, TimesheetService>();
+            /*
+             * services.AddTransient<IRepository, Repository>();
+             * services.AddScoped<IBService, BService>();
+             * services.AddScoped<IAService, AService>();
+             * 
+             * Repository используется в двух сервисах и если у нас Transient, то для каждого сервиса будет
+             * создан свой объект типа IRepository
+             * А если бы был AddScoped, то один объект репозитория использовался бы для двух сервисов
+             */
+
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITimesheetService, TimesheetService>();
             services.AddSingleton<UserSession>();
             services.AddControllers();
         }

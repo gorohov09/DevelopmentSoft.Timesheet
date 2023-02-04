@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Timesheet.API.Services;
+using Timesheet.App.Services;
 
 namespace Timesheet.Tests
 {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Timesheet.Domain.Interfaces;
 
-namespace Timesheet.API.Services
+namespace Timesheet.App.Services
 {
     public class AuthService : IAuthService
     {

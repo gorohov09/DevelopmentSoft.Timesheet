@@ -1,7 +1,7 @@
 ﻿using System;
-using Timesheet.API.Models;
+using Timesheet.Domain.Models;
 
-namespace Timesheet.API.Services
+namespace Timesheet.App.Services
 {
     public class ReportService
     {

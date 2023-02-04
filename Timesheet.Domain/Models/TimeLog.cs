@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Timesheet.API.Models
+namespace Timesheet.Domain.Models
 {
     public class TimeLog
     {
