@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using Timesheet.App.Services;
+using Timesheet.Domain.Interfaces;
 using Timesheet.Domain.Models;
 
 namespace Timesheet.Tests
