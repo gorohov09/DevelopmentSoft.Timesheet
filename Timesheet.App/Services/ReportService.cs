@@ -30,6 +30,9 @@ namespace Timesheet.App.Services
             var timeLogs = _timesheetRepository.GetTimeLogs(employee.LastName);
             var bill = 0m;
 
+            //Логику для подсчета заработанных денег сотрудником в определенный период вынести в отдельный метод,
+            //а может быть и подумать как это пихнуть в Domain
+
             var timeLogsByMounth = timeLogs.GroupBy(x => new
             {
                 x.Date.Year, //Группируем по месяцу и году, так как отчет может быть за >12 месяцев 
@@ -41,7 +44,7 @@ namespace Timesheet.App.Services
                 var hoursMonth = mounth.Sum(x => x.WorkingHours);
                 if (hoursMonth > MAX_WORKING_HOURS_PER_MONTH) //Если переработка
                 {
-                    var recycleHours = hoursMonth - MAX_WORKING_HOURS_PER_MONTH;
+                    var recycleHours = hoursMonth - MAX_WORKING_HOURS_PER_MONTH; //Переработанные часы
                     bill += (recycleHours / MAX_WORKING_HOURS_PER_MONTH) * employee.Salary * 2 + employee.Salary;
                 }
                 else
