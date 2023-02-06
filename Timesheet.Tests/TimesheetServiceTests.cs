@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System;
 using Timesheet.App.Services;
 using Timesheet.Domain.Interfaces;
@@ -23,11 +24,17 @@ namespace Timesheet.Tests
                 LastName = expectedLastName,
                 Comment = "Решал задачки"
             };
+            
+            var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
+            timesheetRepositoryMock
+                .Setup(x => x.Add(timeLog))
+                .Verifiable();
 
-            var service = new TimesheetService(userSession);
+            var service = new TimesheetService(userSession, timesheetRepositoryMock.Object);
 
             var result = service.TrackTime(timeLog);
 
+            timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Once());  
             Assert.IsTrue(result);
         }
 
@@ -51,10 +58,16 @@ namespace Timesheet.Tests
                 Comment = "Решал задачки"
             };
 
-            var service = new TimesheetService(userSession);
+            var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
+            timesheetRepositoryMock
+                .Setup(x => x.Add(timeLog))
+                .Verifiable();
+
+            var service = new TimesheetService(userSession, timesheetRepositoryMock.Object);
 
             var result = service.TrackTime(timeLog);
 
+            timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Never());
             Assert.IsFalse(result);
         }
     }

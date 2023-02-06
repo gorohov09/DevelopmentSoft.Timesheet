@@ -14,6 +14,7 @@ namespace Timesheet.App.Services
     public class ReportService
     {
         private const decimal MAX_WORKING_HOURS_PER_MONTH = 160m;
+        private const decimal MAX_WORKING_HOURS_PER_DAY = 8m;
 
         private readonly ITimesheetRepository _timesheetRepository;
         private readonly IEmployeeRepository _employeeRepository;
@@ -28,10 +29,27 @@ namespace Timesheet.App.Services
         {
             var employee = _employeeRepository.GetEmployee(lastName);
             var timeLogs = _timesheetRepository.GetTimeLogs(employee.LastName);
-            var bill = 0m;
 
-            //Логику для подсчета заработанных денег сотрудником в определенный период вынести в отдельный метод,
-            //а может быть и подумать как это пихнуть в Domain
+            //Используем переработку по дням
+            var bill = CalculateBillWithRecyclingByDay(timeLogs, employee.Salary);
+
+            return new EmployeeReport
+            {
+                LastName = employee.LastName,
+                TimeLogs = timeLogs.ToList(),
+                Bill = bill
+            };
+        }
+
+        /// <summary>
+        /// Подсчет денег, заработанных сотрудником с учетом переработки по месяцам
+        /// </summary>
+        /// <param name="timeLogs"></param>
+        /// <param name="salary"></param>
+        /// <returns></returns>
+        private decimal CalculateBillWithRecyclingByMount(TimeLog[] timeLogs, decimal salary)
+        {
+            var bill = 0m;
 
             var timeLogsByMounth = timeLogs.GroupBy(x => new
             {
@@ -45,18 +63,45 @@ namespace Timesheet.App.Services
                 if (hoursMonth > MAX_WORKING_HOURS_PER_MONTH) //Если переработка
                 {
                     var recycleHours = hoursMonth - MAX_WORKING_HOURS_PER_MONTH; //Переработанные часы
-                    bill += (recycleHours / MAX_WORKING_HOURS_PER_MONTH) * employee.Salary * 2 + employee.Salary;
+                    bill += (recycleHours / MAX_WORKING_HOURS_PER_MONTH) * salary * 2 + salary;
                 }
                 else
-                    bill += (hoursMonth / MAX_WORKING_HOURS_PER_MONTH) * employee.Salary;
+                    bill += (hoursMonth / MAX_WORKING_HOURS_PER_MONTH) * salary;
             }
 
-            return new EmployeeReport
+            return bill;
+        }
+
+        /// <summary>
+        /// Подсчет денег, заработанных сотрудником с учетом переработки по дням
+        /// </summary>
+        /// <param name="timeLogs"></param>
+        /// <param name="salary"></param>
+        /// <returns></returns>
+        private decimal CalculateBillWithRecyclingByDay(TimeLog[] timeLogs, decimal salary)
+        {
+            var bill = 0m;
+            var totalHours = timeLogs.Sum(x => x.WorkingHours);
+
+            var workingHoursGroupsByDay = timeLogs
+                .GroupBy(x => x.Date.ToShortDateString());
+
+            foreach (var workingLogsPerDay in workingHoursGroupsByDay)
             {
-                LastName = employee.LastName,
-                TimeLogs = timeLogs.ToList(),
-                Bill = bill
-            };
+                int dayHours = workingLogsPerDay.Sum(x => x.WorkingHours);
+
+                if (dayHours > MAX_WORKING_HOURS_PER_DAY)
+                {
+                    var overTime = dayHours - MAX_WORKING_HOURS_PER_DAY;
+
+                    bill += MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * salary;
+                    bill += overTime / MAX_WORKING_HOURS_PER_MONTH * salary * 2;
+                }
+                else
+                    bill += dayHours / MAX_WORKING_HOURS_PER_MONTH * salary;
+            }
+
+            return bill;
         }
     }
 }

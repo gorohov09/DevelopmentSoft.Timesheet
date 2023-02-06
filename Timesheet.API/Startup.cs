@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Timesheet.App.Services;
+using Timesheet.DataAccess.CSV;
 using Timesheet.Domain.Interfaces;
 
 namespace Timesheet.API
@@ -37,7 +32,10 @@ namespace Timesheet.API
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITimesheetService, TimesheetService>();
+            services.AddScoped<ITimesheetRepository, TimesheetRepository>();
             services.AddSingleton<UserSession>();
+
+
             services.AddControllers();
         }
 

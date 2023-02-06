@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Timesheet.App\Timesheet.App.csproj" />
+    <ProjectReference Include="..\Timesheet.DataAccess.CSV\Timesheet.DataAccess.CSV.csproj" />
   </ItemGroup>
 
 

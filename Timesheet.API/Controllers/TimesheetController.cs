@@ -11,10 +11,12 @@ namespace Timesheet.API.Controllers
     public class TimesheetController : ControllerBase
     {
         private readonly ITimesheetService _timesheetService;
+        private readonly ITimesheetRepository _timesheetRepository;
 
-        public TimesheetController(ITimesheetService timesheetService)
+        public TimesheetController(ITimesheetService timesheetService, ITimesheetRepository timesheetRepository)
         {
             _timesheetService = timesheetService;
+            _timesheetRepository = timesheetRepository;
         }
 
         [HttpPost("log")]
@@ -27,6 +29,13 @@ namespace Timesheet.API.Controllers
                 Comment = request.Comment,
                 WorkingHours = request.WorkingHours,
             }));
+        }
+
+        [HttpGet("getlogs")]
+        public IActionResult GetLogTime()
+        {
+            var a = _timesheetRepository.GetTimeLogs("Иванов");
+            return Ok(a);
         }
 
     }

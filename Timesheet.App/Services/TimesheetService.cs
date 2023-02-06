@@ -7,10 +7,12 @@ namespace Timesheet.App.Services
     public class TimesheetService : ITimesheetService
     {
         private readonly UserSession _userSession;
+        private readonly ITimesheetRepository _timesheetRepository;
 
-        public TimesheetService(UserSession userSession)
+        public TimesheetService(UserSession userSession, ITimesheetRepository timesheetRepository)
         {
             _userSession = userSession;
+            _timesheetRepository = timesheetRepository;
         }
 
         public bool TrackTime(TimeLog timeLog)
@@ -24,14 +26,9 @@ namespace Timesheet.App.Services
             if (!_userSession.Session.Contains(timeLog.LastName))
                 return false;
 
-            Timesheets.TimeLogs.Add(timeLog);
+            _timesheetRepository.Add(timeLog);
 
             return true;
         }
-    }
-
-    public static class Timesheets
-    {
-        public static List<TimeLog> TimeLogs { get; set; } = new List<TimeLog>();
     }
 }
